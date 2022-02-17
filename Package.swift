@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.5
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "XCMetrics",
     platforms: [
-        .macOS(.v10_15),
+        .macOS(.v12),
     ], products: [
         .executable(name: "XCMetrics", targets: ["XCMetricsApp"]),
         .executable(name: "XCMetricsBackend", targets: ["XCMetricsBackend"]),
@@ -32,24 +32,25 @@ let package = Package(
         .package(url: "https://github.com/vapor/queues.git", from: "1.5.1"),
         .package(url: "https://github.com/vapor/redis.git", from: "4.0.0"),
         .package(url: "https://github.com/vapor-community/google-cloud-kit.git", from: "1.0.0-rc.2"),
-        .package(url: "https://github.com/soto-project/soto.git", from: "4.0.0"),
+        .package(url: "https://github.com/soto-project/soto.git", from: "5.12.1"),
         .package(url: "https://github.com/swift-server/async-http-client.git", from: "1.8.1"),
     ],
     targets: [
         .target(
             name: "XCMetricsClient",
-            dependencies: ["XCLogParser",
-                           "XCMetricsProto",
-                           "XCMetricsUtils",
-                           "GRPC",
-                           "NIO",
-                           "NIOHTTP2",
-                           "MobiusCore",
-                           "MobiusExtras",
-                           "CryptoSwift",
-                           "Yams",
-                           "ArgumentParser",
-                           "XCMetricsCommon"]
+            dependencies: [
+                .product(name: "XCLogParser", package: "xclogparser"),
+                .product(name: "GRPC", package: "grpc-swift"),
+                .product(name: "NIO", package: "swift-nio"),
+                .product(name: "NIOHTTP2", package: "swift-nio-http2"),
+                .product(name: "MobiusCore", package: "Mobius.swift"),
+                .product(name: "MobiusExtras", package: "Mobius.swift"),
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                "XCMetricsProto",
+                "XCMetricsUtils",
+                "CryptoSwift",
+                "Yams",
+                "XCMetricsCommon"]
         ),
         .target(
             name: "XCMetricsPlugins",
@@ -61,7 +62,9 @@ let package = Package(
         ),
         .target(
             name: "XCMetricsProto",
-            dependencies: ["GRPC", "NIO", "NIOHTTP2"]
+            dependencies: [.product(name: "GRPC", package: "grpc-swift"),
+                           .product(name: "NIO", package: "swift-nio"),
+                           .product(name: "NIOHTTP2", package: "swift-nio-http2")]
         ),
         .target(
             name: "XCMetricsApp",
@@ -80,10 +83,11 @@ let package = Package(
                 .product(name: "Queues", package: "queues"),
                 .product(name: "QueuesRedisDriver", package: "queues-redis-driver"),
                 .product(name: "Redis", package: "redis"),
-                .product(name: "XCLogParser", package: "XCLogParser"),
+                .product(name: "XCLogParser", package: "xclogparser"),
                 .product(name: "CryptoSwift", package: "CryptoSwift"),
                 .product(name: "GoogleCloudKit", package: "google-cloud-kit"),
-                .product(name: "S3", package: "AWSSDKSwift"),
+                .product(name: "SotoS3", package: "soto"),
+                .product(name: "SotoSTS", package: "soto"),
                 "XCMetricsCommon"
             ],
             swiftSettings: [
@@ -96,7 +100,10 @@ let package = Package(
         .target(name: "XCMetricsBackend", dependencies: [.target(name: "XCMetricsBackendLib")]),
         .testTarget(
             name: "XCMetricsTests",
-            dependencies: ["XCMetricsClient", "XCMetricsProto", "MobiusTest", "SwiftToolsSupport"]
+            dependencies: ["XCMetricsClient",
+                           "XCMetricsProto",
+                           .product(name: "MobiusTest", package: "Mobius.swift"),
+                           .product(name: "SwiftToolsSupport", package: "swift-tools-support-core")]
         ),
         .testTarget(
             name: "XCMetricsPluginsTests",

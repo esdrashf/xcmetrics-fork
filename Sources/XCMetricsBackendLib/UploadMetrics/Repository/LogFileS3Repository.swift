@@ -19,38 +19,59 @@
 
 import Foundation
 import Vapor
-import S3
+import SotoS3
+import SotoSTS
 
 /// `LogFileRepository` that uses Amazon S3 to store and fetch logs
 struct LogFileS3Repository: LogFileRepository {
 
     let bucketName: String
-
     let s3: S3
 
-    init(accessKey: String, bucketName: String, regionName: String, secretAccessKey: String) {
-        self.bucketName = bucketName
-        guard let region = Region(rawValue: regionName) else {
-            preconditionFailure("Invalid S3 Region \(regionName)")
+    init(config: Configuration) {
+        guard let bucketName = config.s3Bucket else {
+            preconditionFailure("No S3 bucket name provided (XCMETRICS_S3_BUCKET)")
         }
-        self.s3 = S3(accessKeyId: accessKey, secretAccessKey: secretAccessKey, region: region)
+        guard let regionName = config.s3Region,
+              let region = SotoCore.Region(awsRegionName: regionName) else {
+                preconditionFailure("Invalid S3 region provided (XCMETRICS_S3_REGION)")
+        }
+        guard let credentialProvider = Self.credentialProviderFactory(from: config, region: region) else {
+            preconditionFailure("Invalid S3 credentials provided, you have to provide either (AWS_IAM_ROLE) or (AWS_ACCESS_KEY_ID + AWS_SECRET_ACCESS_KEY_ID)")
+        }
+
+        let client = AWSClient(credentialProvider: credentialProvider, httpClientProvider: .createNew)
+
+        self.bucketName = bucketName
+        self.s3 = S3(client: client, region: region)
     }
 
-    init?(config: Configuration) {
-        guard let bucketName = config.s3Bucket, let accessKey = config.awsAccessKeyId,
-              let secretAccessKey = config.awsSecretAccessKey,
-              let regionName = config.s3Region else {
-            return nil
+    private static func credentialProviderFactory(from config: Configuration,
+                                                  region: SotoCore.Region) -> CredentialProviderFactory? {
+
+        if let iamRole = config.awsIamRole {
+            let request = STS.AssumeRoleRequest(roleArn: iamRole,
+                                                roleSessionName: "session-name")
+
+            return .stsAssumeRole(request: request,
+                                  credentialProvider: .ec2,
+                                  region: region)
+
+        } else if let accessKey = config.awsAccessKeyId,
+                  let secretKey = config.awsSecretAccessKey {
+
+            return .static(accessKeyId: accessKey,
+                           secretAccessKey: secretKey)
         }
-        self.init(accessKey: accessKey, bucketName: bucketName,
-                  regionName: regionName, secretAccessKey: secretAccessKey)
+
+        return nil
     }
 
     func put(logFile: File) throws -> URL {
         let data = Data(logFile.data.xcm_onlyFileData().readableBytesView)
-
+        let payload = AWSPayload.data(data)
         let putObjectRequest = S3.PutObjectRequest(acl: .private,
-                                                   body: data,
+                                                   body: payload,
                                                    bucket: bucketName,
                                                    contentLength: Int64(data.count),
                                                    key: logFile.filename)
@@ -70,11 +91,9 @@ struct LogFileS3Repository: LogFileRepository {
         }
         let fileName = logURL.lastPathComponent
         let request = S3.GetObjectRequest(bucket: bucket, key: fileName)
-        let fileData = try s3.getObject(request)
-            .map { response -> Data? in                
-                return response.body
-            }.wait()
-        guard let data = fileData else {
+        let response = try s3.getObject(request).wait()
+
+        guard let data = response.body?.asData() else {
             throw RepositoryError.unexpected(message: "There was an error downloading file \(logURL)")
         }
         let tmp = try TemporaryFile(creatingTempDirectoryForFilename: "\(UUID().uuidString).xcactivitylog")

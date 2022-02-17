@@ -128,6 +128,11 @@ class Configuration {
         return Environment.get("AWS_ACCESS_KEY_ID")
     }()
 
+    /// Amazon AWS IAM Role
+    lazy var awsIamRole: String? = {
+        return Environment.get("AWS_IAM_ROLE")
+    }()
+
     /// Amazon AWS Secret Access Key of an account with permissions to write and read to an S3's bucket
     lazy var awsSecretAccessKey: String? = {
         return Environment.get("AWS_SECRET_ACCESS_KEY")
