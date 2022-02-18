@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>StatisticsController Structure Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+	<meta name="viewport" content="width=device-width, viewport-fit=cover, initial-scale=1.0" />
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Struct/StatisticsController" class="dashAnchor"></a>
+    <a title="StatisticsController Structure Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p>
+          <a href="../index.html"> Docs</a>
+          <span class="no-mobile"> (64% documented)</span>
+        </p>
+    
+        <p class="header-right">
+          <a href="https://github.com/spotify/XCMetrics">
+            <img src="../img/gh.png" alt="GitHub"/>
+            <span class="no-mobile">View on GitHub</span>
+          </a>
+        </p>
+    
+      </div>
+    </header>
+    <div id="breadcrumbs-container">
+      <div class="content-wrapper">
+        <p id="breadcrumbs">
+          <span class="no-mobile">
+            <a href="../index.html"> Reference</a>
+            <img id="carat" src="../img/carat.png" alt=""/>
+          </span>
+          StatisticsController Structure Reference
+        </p>
+      </div>
+    </div>
+    <div class="wrapper">
+      <div class="article-wrapper">
+        <article class="main-content">
+          <section>
+            <section class="section">
+              <h1>StatisticsController</h1>
+                <div class="declaration">
+                  <div class="language">
+                    
+                    <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">StatisticsController</span> <span class="p">:</span> <span class="kt">RouteCollection</span></code></pre>
+
+                  </div>
+                </div>
+              <p>Controller with endpoints that return statistics for build related data</p>
+
+            </section>
+            <section class="section task-group-section">
+              <div class="task-group">
+                <ul>
+                  <li class="item">
+                    <div>
+                      <code>
+                      <a name="/s:19XCMetricsBackendLib20StatisticsControllerV4boot6routesy5Vapor13RoutesBuilder_p_tKF"></a>
+                      <a name="//apple_ref/swift/Method/boot(routes:)" class="dashAnchor"></a>
+                      <a class="token" href="#/s:19XCMetricsBackendLib20StatisticsControllerV4boot6routesy5Vapor13RoutesBuilder_p_tKF">boot(routes:<wbr>)</a>
+                      </code>
+                    </div>
+                    <div class="height-container">
+                      <div class="pointer-container"></div>
+                      <section class="section">
+                        <div class="pointer"></div>
+                        <div class="abstract">
+                          <p>Returns the routes supported by this Controller.
+All the routes are in the <code>v1/statistics</code> path</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    An <code>Error</code> if something goes wrong
+
+</div>
+
+                        </div>
+                        <div class="declaration">
+                          <h4>Declaration</h4>
+                          <div class="language">
+                            <p class="aside-title">Swift</p>
+                            <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">boot</span><span class="p">(</span><span class="nv">routes</span><span class="p">:</span> <span class="kt">RoutesBuilder</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                          </div>
+                        </div>
+                        <div>
+                          <h4>Parameters</h4>
+                          <table class="graybox">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <code>
+                                  <em>routes</em>
+                                  </code>
+                                </td>
+                                <td>
+                                  <div>
+                                    <p>RoutesBuilder to which the routes will be added</p>
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </section>
+                    </div>
+                  </li>
+                  <li class="item">
+                    <div>
+                      <code>
+                      <a name="/s:19XCMetricsBackendLib20StatisticsControllerV11buildCounts3req7NIOCore15EventLoopFutureCySayAA8DayCountCGG5Vapor7RequestC_tKF"></a>
+                      <a name="//apple_ref/swift/Method/buildCounts(req:)" class="dashAnchor"></a>
+                      <a class="token" href="#/s:19XCMetricsBackendLib20StatisticsControllerV11buildCounts3req7NIOCore15EventLoopFutureCySayAA8DayCountCGG5Vapor7RequestC_tKF">buildCounts(req:<wbr>)</a>
+                      </code>
+                    </div>
+                    <div class="height-container">
+                      <div class="pointer-container"></div>
+                      <section class="section">
+                        <div class="pointer"></div>
+                        <div class="abstract">
+                          <p>Endpoint that returns a list of <code><a href="../Classes/DayCount.html">DayCount</a></code> which includes
+the sum of errors and builds during a given day</p>
+
+<ul>
+<li>Method: <code>GET</code></li>
+<li>Route: <code>/v1/statistics/build/count?days=14</code></li>
+<li><p>Request parameters</p>
+
+<ul>
+<li><code>days</code>. How many days to include in the past, starting
+from the current date</li>
+</ul></li>
+<li><p>Response:</p>
+<pre class="highlight swift"><code><span class="p">[</span>
+<span class="p">{</span>
+ <span class="s">"id"</span><span class="p">:</span> <span class="s">"2021-07-14"</span><span class="p">,</span>
+ <span class="s">"builds"</span><span class="p">:</span> <span class="mi">197</span><span class="p">,</span>
+ <span class="s">"errors"</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+<span class="p">},</span>
+<span class="o">...</span>
+<span class="p">]</span>
+</code></pre></li>
+</ul>
+
+                        </div>
+                        <div class="declaration">
+                          <h4>Declaration</h4>
+                          <div class="language">
+                            <p class="aside-title">Swift</p>
+                            <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">buildCounts</span><span class="p">(</span><span class="nv">req</span><span class="p">:</span> <span class="kt">Request</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">EventLoopFuture</span><span class="o">&lt;</span><span class="p">[</span><span class="kt"><a href="../Classes/DayCount.html">DayCount</a></span><span class="p">]</span><span class="o">&gt;</span></code></pre>
+
+                          </div>
+                        </div>
+                      </section>
+                    </div>
+                  </li>
+                  <li class="item">
+                    <div>
+                      <code>
+                      <a name="/s:19XCMetricsBackendLib20StatisticsControllerV11buildStatus3req7NIOCore15EventLoopFutureCy9FluentKit4PageVyAA05BuildG6ResultVGG5Vapor7RequestC_tKF"></a>
+                      <a name="//apple_ref/swift/Method/buildStatus(req:)" class="dashAnchor"></a>
+                      <a class="token" href="#/s:19XCMetricsBackendLib20StatisticsControllerV11buildStatus3req7NIOCore15EventLoopFutureCy9FluentKit4PageVyAA05BuildG6ResultVGG5Vapor7RequestC_tKF">buildStatus(req:<wbr>)</a>
+                      </code>
+                    </div>
+                    <div class="height-container">
+                      <div class="pointer-container"></div>
+                      <section class="section">
+                        <div class="pointer"></div>
+                        <div class="abstract">
+                          <p>Endpoint that returns the paginated list of <code><a href="../Other%20Structs.html#/s:19XCMetricsBackendLib17BuildStatusResultV">BuildStatusResult</a></code>
+to minimize payload size when many statuses are required</p>
+
+<ul>
+<li>Method: <code>GET</code></li>
+<li>Route: <code>/v1/statistics/build/status?page=1&amp;per=10</code></li>
+<li><p>Request parameters</p>
+
+<ul>
+<li><code>page</code>. Optional. Page number to fetch. Default is <code>1</code></li>
+<li><code>per</code>. Optional. Number of items to fetch per page. Default is <code>10</code></li>
+</ul></li>
+<li><p>Response:</p>
+<pre class="highlight swift"><code><span class="p">{</span>
+<span class="s">"metadata"</span><span class="p">:</span> <span class="p">{</span>
+  <span class="s">"per"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+  <span class="s">"total"</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+  <span class="s">"page"</span><span class="p">:</span> <span class="mi">2</span>
+<span class="p">},</span>
+<span class="s">"items"</span><span class="p">:</span> <span class="p">[</span>
+ <span class="p">{</span>
+   <span class="s">"id"</span><span class="p">:</span> <span class="s">"MyMac_34580469-5792-40F3-BEFB-7C5925996F23_1"</span><span class="p">,</span>
+   <span class="s">"buildStatus"</span><span class="p">:</span> <span class="s">"succeeded"</span><span class="p">,</span>
+ <span class="p">},</span>
+ <span class="o">...</span>
+<span class="p">]</span>
+<span class="p">}</span>
+</code></pre></li>
+</ul>
+
+                        </div>
+                        <div class="declaration">
+                          <h4>Declaration</h4>
+                          <div class="language">
+                            <p class="aside-title">Swift</p>
+                            <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">buildStatus</span><span class="p">(</span><span class="nv">req</span><span class="p">:</span> <span class="kt">Request</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">EventLoopFuture</span><span class="o">&lt;</span><span class="kt">Page</span><span class="o">&lt;</span><span class="kt"><a href="../Other%20Structs.html#/s:19XCMetricsBackendLib17BuildStatusResultV">BuildStatusResult</a></span><span class="o">&gt;&gt;</span></code></pre>
+
+                          </div>
+                        </div>
+                      </section>
+                    </div>
+                  </li>
+                  <li class="item">
+                    <div>
+                      <code>
+                      <a name="/s:19XCMetricsBackendLib20StatisticsControllerV10buildTimes3req7NIOCore15EventLoopFutureCySayAA12DayBuildTimeCGG5Vapor7RequestC_tKF"></a>
+                      <a name="//apple_ref/swift/Method/buildTimes(req:)" class="dashAnchor"></a>
+                      <a class="token" href="#/s:19XCMetricsBackendLib20StatisticsControllerV10buildTimes3req7NIOCore15EventLoopFutureCySayAA12DayBuildTimeCGG5Vapor7RequestC_tKF">buildTimes(req:<wbr>)</a>
+                      </code>
+                    </div>
+                    <div class="height-container">
+                      <div class="pointer-container"></div>
+                      <section class="section">
+                        <div class="pointer"></div>
+                        <div class="abstract">
+                          <p>Endpoint that returns a list of <code><a href="../Classes/DayBuildTime.html">DayBuildTime</a></code> which includes
+the build times for a number of procentiles of the builds and the total
+build time for each day, in seconds.
+The <code>durationPX</code> fields indicate that X % of the builds of the a day
+had a duration less or equal to the value.</p>
+
+<ul>
+<li>Method: <code>GET</code></li>
+<li>Route: <code>/v1/statistics/build/time?days=14</code></li>
+<li><p>Request parameters</p>
+
+<ul>
+<li><code>days</code>. How many days to include in the past, starting
+from the current date</li>
+</ul></li>
+<li><p>Response:</p>
+<pre class="highlight swift"><code><span class="p">[</span>
+<span class="p">{</span>
+ <span class="s">"id"</span><span class="p">:</span> <span class="s">"2021-07-26"</span><span class="p">,</span>
+ <span class="s">"durationP50"</span><span class="p">:</span> <span class="mf">18473.21</span><span class="p">,</span>
+ <span class="s">"durationP95"</span><span class="p">:</span> <span class="mf">54431313.32</span>
+ <span class="s">"totalDuration"</span><span class="p">:</span> <span class="mf">10983982398.549</span><span class="p">,</span>
+<span class="p">},</span>
+<span class="o">...</span>
+<span class="p">]</span>
+</code></pre></li>
+</ul>
+
+                        </div>
+                        <div class="declaration">
+                          <h4>Declaration</h4>
+                          <div class="language">
+                            <p class="aside-title">Swift</p>
+                            <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">buildTimes</span><span class="p">(</span><span class="nv">req</span><span class="p">:</span> <span class="kt">Request</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">EventLoopFuture</span><span class="o">&lt;</span><span class="p">[</span><span class="kt"><a href="../Classes/DayBuildTime.html">DayBuildTime</a></span><span class="p">]</span><span class="o">&gt;</span></code></pre>
+
+                          </div>
+                        </div>
+                      </section>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </section>
+          </section>
+        </article>
+      </div>
+      <div class="nav-wrapper">
+        <nav class="nav-bottom">
+          <ul class="nav-groups">
+            <li class="nav-group-name">
+              <a href="../HTTP%20Endpoints.html">HTTP Endpoints</a>
+              <ul class="nav-group-tasks">
+                <li class="nav-group-task">
+                  <a href="../Structs/BuildController.html">BuildController</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Structs/JobLogController.html">JobLogController</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Structs/UploadMetricsController.html">UploadMetricsController</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Structs/StatisticsController.html">StatisticsController</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-group-name">
+              <a href="../Other%20Guides.html">Other Guides</a>
+              <ul class="nav-group-tasks">
+                <li class="nav-group-task">
+                  <a href="../backstage-integration.html">Backstage Integration</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../getting-started.html">Getting Started</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../how-to-deploy-backend.html">How to Deploy Backend</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../log-management-deep-dive.html">Log Management Deep Dive</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../run-the-backend-locally.html">Run the Backend Locally</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-group-name">
+              <a href="../Other%20Classes.html">Other Classes</a>
+              <ul class="nav-group-tasks">
+                <li class="nav-group-task">
+                  <a href="../Classes/Build.html">Build</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Classes/BuildError.html">BuildError</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Classes/BuildHost.html">BuildHost</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Classes/BuildMetadata.html">BuildMetadata</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Classes/BuildWarning.html">BuildWarning</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Classes/DayBuildTime.html">DayBuildTime</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Classes/DayCount.html">DayCount</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Classes/JobLogEntry.html">JobLogEntry</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Other%20Classes.html#/s:15XCMetricsClient27MetricsPublisherServiceHTTPC">MetricsPublisherServiceHTTP</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Classes/Step.html">Step</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Classes/Target.html">Target</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Classes/XCMetricsConfiguration.html">XCMetricsConfiguration</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-group-name">
+              <a href="../Other%20Extensions.html">Other Extensions</a>
+              <ul class="nav-group-tasks">
+                <li class="nav-group-task">
+                  <a href="../Extensions/BuildHost.html">BuildHost</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Extensions/BuildMetadata.html">BuildMetadata</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Extensions/String.html">String</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Extensions/XcodeVersion.html">XcodeVersion</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-group-name">
+              <a href="../Other%20Functions.html">Other Functions</a>
+              <ul class="nav-group-tasks">
+                <li class="nav-group-task">
+                  <a href="../Other%20Functions.html#/s:19XCMetricsBackendLib9configureyy5Vapor11ApplicationCKF">configure(_:)</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-group-name">
+              <a href="../Other%20Protocols.html">Other Protocols</a>
+              <ul class="nav-group-tasks">
+                <li class="nav-group-task">
+                  <a href="../Protocols/DayData.html">DayData</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Protocols/StatisticsRepository.html">StatisticsRepository</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-group-name">
+              <a href="../Other%20Structs.html">Other Structures</a>
+              <ul class="nav-group-tasks">
+                <li class="nav-group-task">
+                  <a href="../Other%20Structs.html#/s:19XCMetricsBackendLib13BuildResponseV">BuildResponse</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Other%20Structs.html#/s:19XCMetricsBackendLib17BuildStatusResultV">BuildStatusResult</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Other%20Structs.html#/s:19XCMetricsBackendLib15ChartTimeSeriesV">ChartTimeSeries</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Other%20Structs.html#/s:19XCMetricsBackendLib12JobDashboardV">JobDashboard</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Structs/MetricsUploadRequest.html">MetricsUploadRequest</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Structs/XCMetrics.html">XCMetrics</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Structs/XCMetricsPlugin.html">XCMetricsPlugin</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-group-name">
+              <a href="../Other%20Typealiases.html">Other Type Aliases</a>
+              <ul class="nav-group-tasks">
+                <li class="nav-group-task">
+                  <a href="../Other%20Typealiases.html#/s:15XCMetricsClient5Builda">Build</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Other%20Typealiases.html#/s:15XCMetricsClient9BuildHosta">BuildHost</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Other%20Typealiases.html#/s:15XCMetricsClient13BuildMetadataa">BuildMetadata</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Other%20Typealiases.html#/s:15XCMetricsClient10ErrorBuilda">ErrorBuild</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Other%20Typealiases.html#/s:15XCMetricsClient13FunctionBuilda">FunctionBuild</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Other%20Typealiases.html#/s:15XCMetricsClient9NoteBuilda">NoteBuild</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Other%20Typealiases.html#/s:15XCMetricsClient9StepBuilda">StepBuild</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Other%20Typealiases.html#/s:15XCMetricsClient19SwiftTypeCheckBuilda">SwiftTypeCheckBuild</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Other%20Typealiases.html#/s:15XCMetricsClient11TargetBuilda">TargetBuild</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Other%20Typealiases.html#/s:15XCMetricsClient25UploadBuildMetricsRequesta">UploadBuildMetricsRequest</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Other%20Typealiases.html#/s:15XCMetricsClient12WarningBuilda">WarningBuild</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="../Other%20Typealiases.html#/s:15XCMetricsClient12XcodeVersiona">XcodeVersion</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-wrapper">
+        <section id="footer">
+          <p>&copy; 2022 <a class="link" href="" target="_blank" rel="external noopener">Spotify</a>. All rights reserved. (Last updated: 2022-02-18)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>

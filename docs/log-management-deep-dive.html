@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Log Management Deep Dive  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css">
+    <link rel="stylesheet" type="text/css" href="css/highlight.css">
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, viewport-fit=cover, initial-scale=1.0">
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a title="Log Management Deep Dive  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p>
+          <a href="index.html"> Docs</a>
+          <span class="no-mobile"> (64% documented)</span>
+        </p>
+    
+        <p class="header-right">
+          <a href="https://github.com/spotify/XCMetrics">
+            <img src="img/gh.png" alt="GitHub">
+            <span class="no-mobile">View on GitHub</span>
+          </a>
+        </p>
+    
+      </div>
+    </header>
+    <div id="breadcrumbs-container">
+      <div class="content-wrapper">
+        <p id="breadcrumbs">
+          <span class="no-mobile">
+            <a href="index.html"> Reference</a>
+            <img id="carat" src="img/carat.png" alt="">
+          </span>
+          Log Management Deep Dive  Reference
+        </p>
+      </div>
+    </div>
+    <div class="wrapper">
+      <div class="article-wrapper">
+        <article class="main-content">
+          <section>
+            <section class="section">
+              
+              <h1 id="logs-management" class="heading">Logs Management</h1>
+
+<p>This document illustrates how XCMetrics manages the logs on the machine where builds are performed.
+The goal of XCMetrics (the tool being executed in a post-action scheme) is to fetch logs from Xcode’s directory, cache them and perform the upload to the backend service for later parsing and processing.</p>
+<h2 id="cache-management" class="heading">Cache Management</h2>
+
+<p>In order not to interfere with Xcode’s build logs directory (<code>~/Library/Developer/Xcode/DerivedData/ProjectName-svojrqwbcsautrwqbobafsapoqwe/Logs/Build/</code>), we copy the logs to a separate cache directory that we can completely manage ourselves. 
+The directory is <code>~/Library/Caches/xcmetrics</code>, where logs are placed in different namespaced directories based on the criteria described below. This is a possible layout of the cache directory:</p>
+<pre class="highlight plaintext"><code>XCMetrics/
+├── Project1/
+│   ├── 0A391ECA-8B35-4E81-865E-FB6D43861384.xcactivitylog
+│   ├── 8F069C22-27FA-4479-AF3C-9674677FC20D_UPLOADED.xcactivitylog
+│   └── requests/
+│       └── 814B2B39-1E50-4953-992C-AE94982D5B9A
+└── Project2/
+    └── 0BBA9976-4EBB-484F-A276-C97A62AB90F2.xcactivitylog
+</code></pre>
+
+<p>Let’s break it down:</p>
+
+<ul>
+<li>At the top level, we have a directory for each project. If this directory doesn’t exist, for example the first time <code><a href="Structs/XCMetrics.html">XCMetrics</a></code> is run in a new project, it will be automatically created. This allows XCMetrics to be used in multiple projects on the same machine, and avoid logs to conflict with each other.</li>
+<li>Logs are copied from Xcode’s directory to the project directory. If a log has been successfully uploaded on the first try, <code>_UPLOADED</code> will be appended to its file name. This is done in order to keep track which logs have been cached already.</li>
+<li>If a log fails to upload (i.e: the backend service is not reachable), the request is written to the <code>requests</code> directory as a binary object containing the log itself along with all the metadata collected for that build. The original <code>xcactivitylog</code> is renamed with <code>_UPLOADED</code> and then the request object will be automatically retried on the next run.</li>
+</ul>
+
+<p>The following diagram better illustrates the flow of all the steps.</p>
+
+<p><img src="img/cache-management.jpg" alt="Cache Management"></p>
+
+<p>Xcode sometimes takes a few seconds to write the full log to disk, so XCMetrics can optionally wait for some time in order to always try and fetch the latest log (use the argument <code>--timeout</code> to customize this behavior).</p>
+<h2 id="visual-demo" class="heading">Visual Demo</h2>
+
+<p>The following GIF shows the behavior when the upload is successful. As you can see, the log is cached in the <code><a href="Structs/XCMetrics.html">XCMetrics</a></code> directory and marked as uploaded.</p>
+
+<p><img src="img/upload-successful.gif" alt="Upload Successful"></p>
+
+<p>In case internet connectivity is absent or some other during the upload occurs, the log is marked as uploaded and cached offline for retry during the next run.</p>
+
+<p><img src="img/upload-failed.gif" alt="Upload Failed"></p>
+
+            </section>
+          </section>
+        </article>
+      </div>
+      <div class="nav-wrapper">
+        <nav class="nav-bottom">
+          <ul class="nav-groups">
+            <li class="nav-group-name">
+              <a href="HTTP%20Endpoints.html">HTTP Endpoints</a>
+              <ul class="nav-group-tasks">
+                <li class="nav-group-task">
+                  <a href="Structs/BuildController.html">BuildController</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Structs/JobLogController.html">JobLogController</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Structs/UploadMetricsController.html">UploadMetricsController</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Structs/StatisticsController.html">StatisticsController</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-group-name">
+              <a href="Other%20Guides.html">Other Guides</a>
+              <ul class="nav-group-tasks">
+                <li class="nav-group-task">
+                  <a href="backstage-integration.html">Backstage Integration</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="getting-started.html">Getting Started</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="how-to-deploy-backend.html">How to Deploy Backend</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="log-management-deep-dive.html">Log Management Deep Dive</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="run-the-backend-locally.html">Run the Backend Locally</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-group-name">
+              <a href="Other%20Classes.html">Other Classes</a>
+              <ul class="nav-group-tasks">
+                <li class="nav-group-task">
+                  <a href="Classes/Build.html">Build</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Classes/BuildError.html">BuildError</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Classes/BuildHost.html">BuildHost</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Classes/BuildMetadata.html">BuildMetadata</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Classes/BuildWarning.html">BuildWarning</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Classes/DayBuildTime.html">DayBuildTime</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Classes/DayCount.html">DayCount</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Classes/JobLogEntry.html">JobLogEntry</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Other%20Classes.html#/s:15XCMetricsClient27MetricsPublisherServiceHTTPC">MetricsPublisherServiceHTTP</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Classes/Step.html">Step</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Classes/Target.html">Target</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Classes/XCMetricsConfiguration.html">XCMetricsConfiguration</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-group-name">
+              <a href="Other%20Extensions.html">Other Extensions</a>
+              <ul class="nav-group-tasks">
+                <li class="nav-group-task">
+                  <a href="Extensions/BuildHost.html">BuildHost</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Extensions/BuildMetadata.html">BuildMetadata</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Extensions/String.html">String</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Extensions/XcodeVersion.html">XcodeVersion</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-group-name">
+              <a href="Other%20Functions.html">Other Functions</a>
+              <ul class="nav-group-tasks">
+                <li class="nav-group-task">
+                  <a href="Other%20Functions.html#/s:19XCMetricsBackendLib9configureyy5Vapor11ApplicationCKF">configure(_:)</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-group-name">
+              <a href="Other%20Protocols.html">Other Protocols</a>
+              <ul class="nav-group-tasks">
+                <li class="nav-group-task">
+                  <a href="Protocols/DayData.html">DayData</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Protocols/StatisticsRepository.html">StatisticsRepository</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-group-name">
+              <a href="Other%20Structs.html">Other Structures</a>
+              <ul class="nav-group-tasks">
+                <li class="nav-group-task">
+                  <a href="Other%20Structs.html#/s:19XCMetricsBackendLib13BuildResponseV">BuildResponse</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Other%20Structs.html#/s:19XCMetricsBackendLib17BuildStatusResultV">BuildStatusResult</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Other%20Structs.html#/s:19XCMetricsBackendLib15ChartTimeSeriesV">ChartTimeSeries</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Other%20Structs.html#/s:19XCMetricsBackendLib12JobDashboardV">JobDashboard</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Structs/MetricsUploadRequest.html">MetricsUploadRequest</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Structs/XCMetrics.html">XCMetrics</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Structs/XCMetricsPlugin.html">XCMetricsPlugin</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-group-name">
+              <a href="Other%20Typealiases.html">Other Type Aliases</a>
+              <ul class="nav-group-tasks">
+                <li class="nav-group-task">
+                  <a href="Other%20Typealiases.html#/s:15XCMetricsClient5Builda">Build</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Other%20Typealiases.html#/s:15XCMetricsClient9BuildHosta">BuildHost</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Other%20Typealiases.html#/s:15XCMetricsClient13BuildMetadataa">BuildMetadata</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Other%20Typealiases.html#/s:15XCMetricsClient10ErrorBuilda">ErrorBuild</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Other%20Typealiases.html#/s:15XCMetricsClient13FunctionBuilda">FunctionBuild</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Other%20Typealiases.html#/s:15XCMetricsClient9NoteBuilda">NoteBuild</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Other%20Typealiases.html#/s:15XCMetricsClient9StepBuilda">StepBuild</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Other%20Typealiases.html#/s:15XCMetricsClient19SwiftTypeCheckBuilda">SwiftTypeCheckBuild</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Other%20Typealiases.html#/s:15XCMetricsClient11TargetBuilda">TargetBuild</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Other%20Typealiases.html#/s:15XCMetricsClient25UploadBuildMetricsRequesta">UploadBuildMetricsRequest</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Other%20Typealiases.html#/s:15XCMetricsClient12WarningBuilda">WarningBuild</a>
+                </li>
+                <li class="nav-group-task">
+                  <a href="Other%20Typealiases.html#/s:15XCMetricsClient12XcodeVersiona">XcodeVersion</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-wrapper">
+        <section id="footer">
+          <p>© 2022 <a class="link" href="" target="_blank" rel="external noopener">Spotify</a>. All rights reserved. (Last updated: 2022-02-18)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="XCMetrics is the easiest way to collect Xcode build metrics and improve developer productivity."
+    />
+    <title>
+      XCMetrics: Discover valuable insights hiding inside Xcode’s build logs
+    </title>
+    <link rel="canonical" href="https://xcmetrics.io" />
+    <link rel="shortcut icon" href="images/favicon.png" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <a class="logo-link" href="/"
+        ><img
+          width="100%"
+          height="100%"
+          alt="XCMetrics"
+          class="logo"
+          src="images/logo.png"
+      /></a>
+      <input id="nav" type="checkbox" />
+      <label for="nav"></label>
+      <nav>
+        <ul>
+          <li>
+            <a
+              rel="noopener noreferrer"
+              target="_blank"
+              href="https://github.com/spotify/XCMetrics"
+              >GitHub</a
+            >
+          </li>
+          <li>
+            <a rel="noopener noreferrer" target="_blank" href="docs">Docs</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <div class="container">
+        <div class="hero-block">
+          <h1>Discover valuable insights hiding inside Xcode’s build logs</h1>
+          <img
+            alt="XCMetrics collects, stores, parses, and tracks data from Xcode’s build logs"
+            src="images/xcmetrics-open-source-xcode-tool.gif"
+            width="100%"
+          />
+        </div>
+      </div>
+      <div class="info">
+        <div class="container">
+          <div class="info-block">
+            <div class="info-item">
+              <h2>Track your team’s build metrics</h2>
+              <p>
+                Are your team’s build times improving or regressing? Which
+                version of Xcode is slowest? Which hardware setup is fastest?
+                XCMetrics makes it easy to find out all this and more by
+                collecting, displaying, and tracking the data inside your team’s
+                Xcode build logs.
+              </p>
+            </div>
+            <div class="info-item">
+              <h2>Made for (and by) iOS engineers</h2>
+              <p>
+                XCMetrics works with teams of all sizes. Made for iOS engineers
+                by iOS engineers, the tool is written completely in Swift,
+                making it easy to customize. Track the data you want to see, the
+                way you want to see it — and use the insights to improve
+                developer experience and productivity.
+              </p>
+            </div>
+            <div class="info-item-gray">
+              <img
+                alt="XCMetrics automatically collects xcodebuild logs whenever anyone runs a build"
+                src="images/xcmetrics-xcodebuild-collect.gif"
+              />
+              <h2>All your build data, all in one place</h2>
+              <p>
+                Whenever you run a local or continuous integration build, Xcode
+                and xcodebuild produce a log file. XCMetrics automatically
+                collects these build logs from everyone on your team.
+              </p>
+            </div>
+            <div class="info-item-gray">
+              <img
+                alt="XCMetrics parses xactivitylog data so you can track metrics and see insights for your whole team"
+                src="images/xcmetrics-xactivitylog-track.gif"
+              />
+              <h2>Sort, search, track, discover</h2>
+              <p>
+                The data is then extracted from the xcactivitylog files and
+                stored in easy-to-manipulate tables — allowing you to view build
+                times, warnings, errors, and any other metadata, any way you
+                want.
+              </p>
+            </div>
+            <div class="info-item-gray">
+              <img
+                alt="XCMetrics data stays with you: on your machine and on the backend service you host"
+                src="images/xcmetrics-data-security.gif"
+              />
+              <h2>Your data stays with you</h2>
+              <p>
+                All data is safely stored on your machine and is only sent to a
+                backend service that you host. You fully own the information,
+                every step of the way.
+              </p>
+            </div>
+            <div class="info-item-gray">
+              <img
+                alt="XCMetrics is written in Swift for easy customization"
+                src="images/xcmetrics-swift-ios-customization.gif"
+              />
+              <h2>Your data, any way you want it</h2>
+              <p>
+                Customize XCMetrics with the metrics that are important to you.
+                All the tools are written in Swift to make it easier for iOS
+                engineers to customize, extend, and contribute to the project.
+              </p>
+            </div>
+          </div>
+        </div>
+        <a class="get-started-link" href="docs"
+          ><button class="get-started-button">Get Started</button></a
+        >
+      </div>
+      <div class="video-block">
+        <div class="video-content">
+          <div class="video-content-text">
+            <h2>Watch the demo video</h2>
+            <p class="video-content-text-subtext">
+              See how XCMetrics works and how to set it up.
+            </p>
+          </div>
+          <div class="video-container">
+            <iframe
+              title="Learn how XCMetrics works"
+              class="video"
+              src="https://www.youtube.com/embed/kgdeqcYJKfo"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="container">
+            <div class="info-item">
+              <h2>Backstage integration</h2>
+              <p>
+                The XCMetrics <a href="https://backstage.io">Backstage</a> plugin offers a powerful
+                web interface enabling you to get a visual overview and to dig deep into most of the
+                collected metrics.
+              </p>
+              <div class="screenshot-container">
+                <div class="screenshot fade">
+                  <img src="images/xcmetrics-backstage-overview.png" />
+                  <div>See everything at a glance</div>
+                </div>
+              
+                <div class="screenshot fade">
+                  <img src="images/xcmetrics-backstage-trends.png" />
+                  <div>Analyze trends</div>
+                </div>
+              
+                <div class="screenshot fade">
+                  <img src="images/xcmetrics-backstage-details.png" />
+                  <div>Dig into the details</div>
+                </div>
+              </div>
+            </div>
+          </div>  
+      </div>
+    </main>
+    <footer>
+      <div class="footer-notice">
+        <span class="footer-xcode"
+          >Xcode is a trademark of Apple Inc., registered in the U.S. and other
+          countries.</span
+        >
+        <span class="footer-love">Made with ❤️ at Spotify</span>
+        <span class="footer-copyright">Copyright © 2021 Spotify AB</span>
+      </div>
+    </footer>
+    <script type="text/javascript">
+      var currentSlide = 0;
+
+      function slideShow() {
+        var slides = document.getElementsByClassName("screenshot");
+
+        for (i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";
+        }
+
+        slides[currentSlide].style.display = "block";
+
+        currentSlide = ((currentSlide + 1) % slides.length)
+        setTimeout(slideShow, 3000);
+      }
+      
+      slideShow();
+    </script>
+  </body>
+</html>
